@@ -1,6 +1,6 @@
 var roomName = 'N3SB';
-var roomSysId = '';
 // find the sys_id of the room
+var roomSysId = '';
 var grRoom = new GlideRecord('cmdb_ci_computer_room');
 grRoom.addQuery('name', roomName);
 grRoom.query();
@@ -42,14 +42,28 @@ grSled.query();
 while (grSled.next()) {
   ciList.push(grSled.getValue('child'));
 }
-// find the CIs that do not are not installed
+// check the CIs
+var asset;
+var ciSysId;
+var install;
+var isSus;
 var susList = [];
 var grCmdbCi = new GlideRecord('cmdb_ci');
 grCmdbCi.addQuery('sys_id', 'IN', ciList);
 grCmdbCi.query();
 while (grCmdbCi.next()) {
-  if (grCmdbCi.getValue('install_status') !== '1') {
-    susList.push('https://godaddy.service-now.com/cmdb_ci.do?sys_id=' + grCmdbCi.getUniqueValue());
+  asset = grCmdbCi.getValue('asset');
+  ciSysId = grCmdbCi.getUniqueValue();
+  install = grCmdbCi.getValue('install_status');
+  isSus = false;
+  if (install !== '1') {
+    isSus = true;
+  }
+  if (asset === null) {
+    isSus = true;
+  }
+  if (isSus) {
+    susList.push('https://godaddy.service-now.com/cmdb_ci.do?sys_id=' + ciSysId);
   }
 }
 gs.print('Number of suspicious CIs found = ' + susList.length);
