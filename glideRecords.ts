@@ -38,10 +38,9 @@ while(gr.next()) {
   }
   //
   exampleUnixTime = null;
-  test = gr.getValue('xxxxx');
   // @ts-ignore
-  if (new GlideDateTime(test).getNumericValue() !== 0) {
-    // @ts-ignore
-    exampleUnixTime = new GlideDateTime(test).getNumericValue();
+  test = new GlideDateTime(gr.getValue('xxxxx')).getNumericValue();
+  if (test !== 0) {
+    exampleUnixTime = test;
   }
 }
