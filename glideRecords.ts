@@ -2,6 +2,7 @@ let exampleBoolean: boolean | null;
 let exampleFloat: number | null;
 let exampleInteger: number | null;
 let exampleString: string | null;
+let exampleUnixTime: number | null;
 let test: any;
 //
 exampleBoolean = null;
@@ -29,4 +30,10 @@ exampleString = null;
 test = gr.getValue('xxxxx');
 if (typeof test === 'string' && test !== '') {
   exampleString = test;
+}
+//
+exampleUnixTime = null;
+test = gr.getValue('xxxxx');
+if (new GlideDateTime(test).getNumericValue() !== 0) {
+  exampleUnixTime = new GlideDateTime(test).getNumericValue();
 }
